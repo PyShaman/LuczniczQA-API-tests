@@ -1,14 +1,14 @@
 from fastapi import FastAPI, Depends, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from databases import Database
 
 from .models.user import User
+from .models.user import oauth2_scheme, get_current_user
 
 
 app = FastAPI()
 database = Database("sqlite:///test.db")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @app.on_event("startup")
@@ -24,17 +24,6 @@ async def database_disconnect():
 @app.get("/items/")
 async def read_items(token: str = Depends(oauth2_scheme)):
     return {"token": token}
-
-
-def fake_decode_token(token):
-    return User(
-        username=token + "fakedecoded", email="john@example.com", full_name="John Doe"
-    )
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    user = fake_decode_token(token)
-    return user
 
 
 @app.get("/users/me")
