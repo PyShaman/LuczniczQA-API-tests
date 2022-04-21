@@ -1,4 +1,5 @@
 # LuczniczQA-API-tests
 
 Run app:
-$ hypercorn main:app
+
+$ hypercorn src/app/main:app

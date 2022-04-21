@@ -71,7 +71,7 @@ async def get_user(user: User_Pydantic = Depends(get_current_user)):
 
 register_tortoise(
     app,
-    db_url='sqlite://db.sqlite',
+    db_url='sqlite://src/app/db/db.sqlite',
     modules={'models': ['main']},
     generate_schemas=True,
     add_exception_handlers=True
