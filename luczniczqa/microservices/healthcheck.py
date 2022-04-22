@@ -29,7 +29,7 @@ async def get_healthcheck():
 
 async def is_luczniczqa_online():
     message, status_code = await get_healthcheck()
-    return True if status_code == status.HTTP_200_OK else False
+    return True if message["detail"] == "Not Found" else False
 
 
 @router.get("/healthcheck", tags=["healthcheck"])

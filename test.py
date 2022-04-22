@@ -13,3 +13,6 @@ headers = {
 response = requests.request("GET", url, headers=headers, data=payload)
 
 print(response.text)
+
+r = requests.request("GET", "http://127.0.0.1:8000/")
+print(r.json())
