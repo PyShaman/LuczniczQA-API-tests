@@ -2,4 +2,4 @@
 
 Run app:
 
-$ hypercorn src/app/main:app
+$ hypercorn luczniczqa/main:app

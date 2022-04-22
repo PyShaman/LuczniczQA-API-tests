@@ -1,13 +1,16 @@
 import jwt
 
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.hash import bcrypt
 from tortoise import fields
 from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.models import Model
 
-from luczniczqa.microservices.const import JWT_SECRET
+from .const import JWT_SECRET
+
+
+router = APIRouter()
 
 
 class User(Model):
@@ -43,3 +46,25 @@ async def get_current_user(token: str = Depends(oath2_scheme)):
             detail='Invalid username or password'
         )
     return await user_pydantic.from_tortoise_orm(user)
+
+
+@router.post('/token', tags=["users"])
+async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await authenticate_user(form_data.username, form_data.password)
+    if not user:
+        return {'error': 'invalid credentials'}
+    user_obj = await user_pydantic.from_tortoise_orm(user)
+    token = jwt.encode(user_obj.dict(), JWT_SECRET)
+    return {'access_token': token, 'token_type': 'bearer'}
+
+
+@router.post('/users', response_model=user_pydantic, tags=["users"])
+async def create_user(user: user_in_pydantic):
+    user_obj = User(username=user.username, password_hash=bcrypt.hash(user.password_hash))
+    await user_obj.save()
+    return await user_pydantic.from_tortoise_orm(user_obj)
+
+
+@router.get('/users/me', response_model=user_pydantic, tags=["users"])
+async def get_user(user: user_pydantic = Depends(get_current_user)):
+    return user
