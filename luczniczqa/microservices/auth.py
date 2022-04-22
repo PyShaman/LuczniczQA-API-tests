@@ -11,7 +11,7 @@ from .const import JWT_SECRET
 
 
 router = APIRouter()
-
+https://www.youtube.com/watch?v=vVjWeLVv97c
 
 class User(Model):
     id = fields.IntField(pk=True)
@@ -48,6 +48,18 @@ async def get_current_user(token: str = Depends(oath2_scheme)):
     return await user_pydantic.from_tortoise_orm(user)
 
 
+async def get_users(token: str = Depends(oath2_scheme)):
+    try:
+        # payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+        users = await User.all()
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid username or password'
+        )
+    return users
+
+
 @router.post('/token', tags=["users"])
 async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(form_data.username, form_data.password)
@@ -58,13 +70,21 @@ async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
     return {'access_token': token, 'token_type': 'bearer'}
 
 
-@router.post('/users', response_model=user_pydantic, tags=["users"])
+@router.post('/user', response_model=user_pydantic, tags=["users"])
 async def create_user(user: user_in_pydantic):
     user_obj = User(username=user.username, password_hash=bcrypt.hash(user.password_hash))
     await user_obj.save()
     return await user_pydantic.from_tortoise_orm(user_obj)
 
 
-@router.get('/users/me', response_model=user_pydantic, tags=["users"])
+@router.get('/users', tags=["users"])
+async def get_users(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await authenticate_user(form_data.username, form_data.password)
+    if not user:
+        return {'error': 'invalid credentials'}
+    return await user_pydantic.from_queryset(User.all())
+
+
+@router.get('/user/me', response_model=user_pydantic, tags=["users"])
 async def get_user(user: user_pydantic = Depends(get_current_user)):
     return user
