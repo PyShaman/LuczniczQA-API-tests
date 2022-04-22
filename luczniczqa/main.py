@@ -6,7 +6,7 @@ from microservices.auth import router as auth_router
 from microservices.healthcheck import router as health_check_router
 
 app = FastAPI(
-    title="ŁuczniczQA",
+    title="ŁuczniczQA ♥",
     description="ŁuczniczQA API will help you during the workshop with 'Introduction to API Testing in Python'",
     contact={
         "names": "Michał Bek, Jacek Stachowiak",
