@@ -1,16 +1,16 @@
 import jwt
 
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.hash import bcrypt
 from tortoise import fields
-from tortoise.contrib.fastapi import register_tortoise
 from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.models import Model
-from passlib.hash import bcrypt
 
-app = FastAPI()
+from .const import JWT_SECRET
 
-JWT_SECRET = 'b44a6f64-c0dd-44e4-b70d-acd5ff21f274-alamakota-&^%'
+
+router = APIRouter()
 
 
 class User(Model):
@@ -22,9 +22,8 @@ class User(Model):
         return bcrypt.verify(password, self.password_hash)
 
 
-User_Pydantic = pydantic_model_creator(User, name='User')
-UserIn_Pydantic = pydantic_model_creator(User, name='UserIn', exclude_readonly=True)
-
+user_pydantic = pydantic_model_creator(User, name='User')
+user_in_pydantic = pydantic_model_creator(User, name='UserIn', exclude_readonly=True)
 oath2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 
 
@@ -46,33 +45,26 @@ async def get_current_user(token: str = Depends(oath2_scheme)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid username or password'
         )
-    return await User_Pydantic.from_tortoise_orm(user)
+    return await user_pydantic.from_tortoise_orm(user)
 
-@app.post('/token')
+
+@router.post('/token', tags=["users"])
 async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         return {'error': 'invalid credentials'}
-    user_obj = await User_Pydantic.from_tortoise_orm(user)
+    user_obj = await user_pydantic.from_tortoise_orm(user)
     token = jwt.encode(user_obj.dict(), JWT_SECRET)
     return {'access_token': token, 'token_type': 'bearer'}
 
 
-@app.post('/users', response_model=User_Pydantic)
-async def create_user(user: UserIn_Pydantic):
+@router.post('/users', response_model=user_pydantic, tags=["users"])
+async def create_user(user: user_in_pydantic):
     user_obj = User(username=user.username, password_hash=bcrypt.hash(user.password_hash))
     await user_obj.save()
-    return await User_Pydantic.from_tortoise_orm(user_obj)
+    return await user_pydantic.from_tortoise_orm(user_obj)
 
 
-@app.get('/users/me', response_model=User_Pydantic)
-async def get_user(user: User_Pydantic = Depends(get_current_user)):
+@router.get('/users/me', response_model=user_pydantic, tags=["users"])
+async def get_user(user: user_pydantic = Depends(get_current_user)):
     return user
-
-register_tortoise(
-    app,
-    db_url='sqlite://db.sqlite',
-    modules={'models': ['main']},
-    generate_schemas=True,
-    add_exception_handlers=True
-)
