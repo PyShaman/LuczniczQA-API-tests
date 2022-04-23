@@ -21,10 +21,10 @@ $ source venv\bin\activate [for Linux]
 Install packages:
 > pip install -r requirements.txt [for Windows]
 
-$ pip3 install -r requirements.txt [for Linux]
+> pip3 install -r requirements.txt [for Linux]
 
 Run application:
-$ python .\main.py
+> python .\main.py
 
 Root page is available at: http://127.0.0.1:8080/
 Swagger is available at: http://127.0.0.1:8080/docs
