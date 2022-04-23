@@ -4,9 +4,9 @@
 TODO: fill the documentation
 
 1. Download and install MongoDB
-1.a. https://www.mongodb.com/try/download/community
-1.b. Install mondoDB for Windows (follow tutorial until 5:29 https://www.youtube.com/watch?v=FwMwO8pXfq0&ab_channel=ProgrammingKnowledge)
-1.c. Install mongodb for Linux (follow tutorial https://www.youtube.com/watch?v=JTvGImRESzg&ab_channel=ATOM)
+2. https://www.mongodb.com/try/download/community
+3. Install mondoDB for Windows (follow tutorial until 5:29 https://www.youtube.com/watch?v=FwMwO8pXfq0&ab_channel=ProgrammingKnowledge)
+4. Install mongodb for Linux (follow tutorial https://www.youtube.com/watch?v=JTvGImRESzg&ab_channel=ATOM)
 
 Prepare venv:
 > python -m venv venv
