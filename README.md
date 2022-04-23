@@ -13,11 +13,14 @@ Prepare venv:
 
 Activate virtual environment:
 > .\venv\Scripts\Activate.ps1 [for PowerShell]
+
 > venv\Scripts\activate.bat [for cmd]
+
 $ source venv\bin\activate [for Linux]
 
 Install packages:
 > pip install -r requirements.txt [for Windows]
+
 $ pip3 install -r requirements.txt [for Linux]
 
 Run application:
