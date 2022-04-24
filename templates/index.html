@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Declared Vars To Go Here -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Metadata -->
+    <meta name="description" content="ŁuczniczQA API Tests">
+    <meta name="author" content="mbek">
+    <!-- Page Name and Site Name -->
+    <title>ŁuczniczQA API Tests - Frontend</title>
+    <!-- CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <style>
+    #btn_up {
+    background-color: #04AA6D;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 250px;
+    }
+    #btn_dwn {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 250px;
+    }
+    #customers {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+    #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+    #customers tr:hover {background-color: #ddd;}
+    #customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <header class="header clearfix" style="background-color: #ffffff">
+        <!-- Main Menu -->
+        <img style="margin: 5px 0px 5px 5px; float: left;" src="https://cdn-icons-png.flaticon.com/512/627/627558.png?w=826&t=st=1650654577~exp=1650655177~hmac=e428f1a62a0c7de1dad22ff0ecb444c16920c92771a02dd14495ffac0f80bafa" width="50px" />
+        <nav>
+          <ul class="nav nav-pills pull-right">
+          </ul>
+        </nav>
+        <!-- Site Name -->
+        <h1 class="h3 text-muted" >&emsp;ŁuczniczQA API Tests</h1>
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb">
+        </ol>
+      </header>
+      <div class="page-heading" style="text-align: center;">
+        <!-- Page Heading -->
+        <h1>The status of Application is {{ app_status }}</h1>
+        </br>
+        <form action="" method="post">
+          <input id="btn_up" type="submit" name="up" value="Set ONLINE" />
+          <input id="btn_dwn" type="submit" name="down" value="Set OFFLINE" />
+        </form>
+        <br>
+        <table id="customers">
+          <tr>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Country</th>
+          </tr>
+          <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Germany</td>
+          </tr>
+          <tr>
+            <td>Berglunds snabbköp</td>
+            <td>Christina Berglund</td>
+            <td>Sweden</td>
+          </tr>
+          <tr>
+            <td>Centro comercial Moctezuma</td>
+            <td>Francisco Chang</td>
+            <td>Mexico</td>
+          </tr>
+          <tr>
+            <td>Ernst Handel</td>
+            <td>Roland Mendel</td>
+            <td>Austria</td>
+          </tr>
+          <tr>
+            <td>Island Trading</td>
+            <td>Helen Bennett</td>
+            <td>UK</td>
+          </tr>
+          <tr>
+            <td>Königlich Essen</td>
+            <td>Philip Cramer</td>
+            <td>Germany</td>
+          </tr>
+          <tr>
+            <td>Laughing Bacchus Winecellars</td>
+            <td>Yoshi Tannamuri</td>
+            <td>Canada</td>
+          </tr>
+          <tr>
+            <td>Magazzini Alimentari Riuniti</td>
+            <td>Giovanni Rovelli</td>
+            <td>Italy</td>
+          </tr>
+          <tr>
+            <td>North/South</td>
+            <td>Simon Crowther</td>
+            <td>UK</td>
+          </tr>
+          <tr>
+            <td>Paris spécialités</td>
+            <td>Marie Bertrand</td>
+            <td>France</td>
+          </tr>
+        </table>
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumb">
+        </ol>
+      </div>
+    </div>
+    <footer class="footer" style="text-align: center;">
+      <p>
+        Last Visited: {{ refresh_time }}
+      </p>
+      <p>&copy; 2022 EGNYTE POLAND</p>
+    </footer>
+  </body>
+</html>
