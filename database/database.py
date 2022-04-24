@@ -2,7 +2,7 @@ import motor.motor_asyncio
 from bson import ObjectId
 from decouple import config
 
-from .database_helper import admin_helper, student_helper, university_helper
+from .database_helper import admin_helper, status_helper, student_helper, university_helper
 
 MONGO_DETAILS = config('MONGO_DETAILS')
 
@@ -10,8 +10,8 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
 database = client.university
 
-
 admin_collection = database.get_collection('admins')
+status_collection = database.get_collection('status')
 student_collection = database.get_collection('students_collection')
 university_collection = database.get_collection('university_collection')
 
@@ -86,3 +86,15 @@ async def update_university_data(id: str, data: dict):
     if university:
         university_collection.update_one({"_id": ObjectId(id)}, {"$set": data})
         return True
+
+
+async def add_status(status_data: dict) -> dict:
+    status = await status_collection.insert_one(status_data)
+    new_status = await status_collection.find_one({"_id": status.inserted_id})
+    return status_helper(new_status)
+
+
+async def retrieve_status(id: str) -> dict:
+    status = await status_collection.find_one({"_id": ObjectId(id)})
+    if status:
+        return status_helper(status)

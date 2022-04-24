@@ -2,10 +2,10 @@ import datetime
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, Request
-from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from auth.jwt_bearer import JWTBearer
+from database.database import student_collection, university_collection
 from routes.admin import router as admin_router
 from routes.healthcheck import router as healthcheck_router
 from routes.student import router as student_router
@@ -34,9 +34,13 @@ async def read_root():
 @app.route("/start")
 async def get_start(request: Request):
     refresh_time = str(datetime.datetime.now().isoformat())[:19].replace("T", " ")
+    student_list = await student_collection.find({}).sort([('_id', 1)]).to_list(length=None)
+    university_list = await university_collection.find({}).sort([('_id', 1)]).to_list(length=None)
     app_status = "ONLINE"
     return templates.TemplateResponse("index.html", {"request": request,
                                                      "app_status": app_status,
+                                                     "students": student_list,
+                                                     "universities": university_list,
                                                      "refresh_time": refresh_time})
 
 

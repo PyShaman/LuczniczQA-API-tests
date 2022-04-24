@@ -9,6 +9,12 @@ def admin_helper(admin) -> dict:
     }
 
 
+def status_helper(status) -> dict:
+    return {
+        "status": status['status']
+    }
+
+
 def student_helper(student) -> dict:
     return {
         "id": str(student['_id']),

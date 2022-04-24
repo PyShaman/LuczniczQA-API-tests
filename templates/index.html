@@ -36,18 +36,20 @@
     font-size: 16px;
     width: 250px;
     }
-    #customers {
+    #students, #universities {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     }
-    #customers td, #customers th {
+    #students td, #students th, #universities td, #universities th {
     border: 1px solid #ddd;
     padding: 8px;
     }
-    #customers tr:nth-child(even){background-color: #f2f2f2;}
-    #customers tr:hover {background-color: #ddd;}
-    #customers th {
+    #students tr:nth-child(even){background-color: #f2f2f2;}
+    #students tr:hover {background-color: #ddd;}
+    #universities tr:nth-child(even){background-color: #f2f2f2;}
+    #universities tr:hover {background-color: #ddd;}
+    #students th, #universities th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
@@ -79,63 +81,38 @@
           <input id="btn_dwn" type="submit" name="down" value="Set OFFLINE" />
         </form>
         <br>
-        <table id="customers">
+        <table id="students">
           <tr>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Country</th>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Course of Study</th>
+            <th>Year</th>
+            <th>GPA</th>
           </tr>
+          {% for student in students %}
           <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
+            {% for key, value in student.items() %}
+            <td>{{ value }}</td>
+            {% endfor %}
           </tr>
+          {% endfor %}
+        </table><br>
+        <table id="universities">
           <tr>
-            <td>Berglunds snabbköp</td>
-            <td>Christina Berglund</td>
-            <td>Sweden</td>
+            <th>ID</th>
+            <th>University Name</th>
+            <th>City</th>
+            <th>Timezone</th>
           </tr>
+          {% for university in universities %}
           <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
+            {% for key, value in university.items() %}
+            <td>{{ value }}</td>
+            {% endfor %}
           </tr>
-          <tr>
-            <td>Ernst Handel</td>
-            <td>Roland Mendel</td>
-            <td>Austria</td>
-          </tr>
-          <tr>
-            <td>Island Trading</td>
-            <td>Helen Bennett</td>
-            <td>UK</td>
-          </tr>
-          <tr>
-            <td>Königlich Essen</td>
-            <td>Philip Cramer</td>
-            <td>Germany</td>
-          </tr>
-          <tr>
-            <td>Laughing Bacchus Winecellars</td>
-            <td>Yoshi Tannamuri</td>
-            <td>Canada</td>
-          </tr>
-          <tr>
-            <td>Magazzini Alimentari Riuniti</td>
-            <td>Giovanni Rovelli</td>
-            <td>Italy</td>
-          </tr>
-          <tr>
-            <td>North/South</td>
-            <td>Simon Crowther</td>
-            <td>UK</td>
-          </tr>
-          <tr>
-            <td>Paris spécialités</td>
-            <td>Marie Bertrand</td>
-            <td>France</td>
-          </tr>
-        </table>
+          {% endfor %}
+        </table><br>
         <!-- Breadcrumbs -->
         <ol class="breadcrumb">
         </ol>
