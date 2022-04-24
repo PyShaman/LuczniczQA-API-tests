@@ -22,6 +22,19 @@ async def add_admin(admin_data: dict) -> dict:
     return admin_helper(new_admin)
 
 
+async def add_status(status_data: dict) -> dict:
+    status = await status_collection.insert_one(status_data)
+    new_status = await status_collection.find_one({"_id": status.inserted_id})
+    return status_helper(new_status)
+
+
+async def retrieve_status() -> dict:
+    statuses = []
+    async for status in status_collection.find():
+        statuses.append(status_helper(status))
+    return statuses[-1]
+
+
 async def retrieve_students():
     students = []
     async for student in student_collection.find():
@@ -86,15 +99,3 @@ async def update_university_data(id: str, data: dict):
     if university:
         university_collection.update_one({"_id": ObjectId(id)}, {"$set": data})
         return True
-
-
-async def add_status(status_data: dict) -> dict:
-    status = await status_collection.insert_one(status_data)
-    new_status = await status_collection.find_one({"_id": status.inserted_id})
-    return status_helper(new_status)
-
-
-async def retrieve_status(id: str) -> dict:
-    status = await status_collection.find_one({"_id": ObjectId(id)})
-    if status:
-        return status_helper(status)

@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+      $.ajax({
+        type: "POST",
+        url: "http://127.0.0.1:8080/status/",
+        data: {"status": "OFFLINE"},
+        success: function(){},
+        dataType: "json",
+        contentType : "application/json"
+      });
+    </script>
     <!-- Declared Vars To Go Here -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,7 +24,13 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <style>
-    #btn_up {
+    #ONLINE {
+    color: #04AA6D;
+    }
+    #OFFLINE {
+    color: #f44336;
+    }
+    #btn_online {
     background-color: #04AA6D;
     border: none;
     color: white;
@@ -25,7 +41,7 @@
     font-size: 16px;
     width: 250px;
     }
-    #btn_dwn {
+    #btn_offline {
     background-color: #f44336;
     border: none;
     color: white;
@@ -74,11 +90,11 @@
       </header>
       <div class="page-heading" style="text-align: center;">
         <!-- Page Heading -->
-        <h1>The status of Application is {{ app_status }}</h1>
+        <h1>The status of Application is </h1><h1 id="{{'ONLINE' if app_status == 'ONLINE' else 'OFFLINE'}}" >{{ app_status }}</h1>
         </br>
-        <form action="" method="post">
-          <input id="btn_up" type="submit" name="up" value="Set ONLINE" />
-          <input id="btn_dwn" type="submit" name="down" value="Set OFFLINE" />
+        <form >
+          <button id="btn_online" type="submit" onclick="set_online()">Set ONLINE</button>
+          <button id="btn_offline" type="submit" onclick="set_offline()">Set OFFLINE</button>
         </form>
         <br>
         <table id="students">
