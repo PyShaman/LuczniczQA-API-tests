@@ -7,10 +7,10 @@ from models.status import *
 router = APIRouter()
 
 
-@router.get("/", response_description="Status retrieved")
-async def get_status():
-    status = await retrieve_status()
-    return response_model(students, "Students data retrieved successfully") \
-        if len(students) > 0 \
+@router.get("/{id}", response_description="Status retrieved")
+async def get_status(id):
+    status = await retrieve_status(id)
+    return response_model(status, "Status data retrieved successfully") \
+        if len(status) > 0 \
         else response_model(
-        students, "Empty list returned")
+        status, "Empty list returned")

@@ -11,6 +11,7 @@ def admin_helper(admin) -> dict:
 
 def status_helper(status) -> dict:
     return {
+        "id": 1,
         "status": status['status']
     }
 
