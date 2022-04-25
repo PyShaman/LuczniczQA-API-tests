@@ -1,24 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script>
-      const button = document.querySelector("#btn_online")
-      button.addEventListener('click', () => {
-        fetch('http://127.0.0.1:8080/status/', {
-          method: 'POST',
-          body: {"status": "ONLINE"}
-        }).then(() => location.reload())
-  });
-    </script>
-    <script>
-      let button = document.querySelector("#btn_offline")
-      button.addEventListener('click', () => {
-        fetch('http://127.0.0.1:8080/status/', {
-          method: 'POST',
-          body: {"status": "OFFLINE"}
-        }).then(() => location.reload())
-  });
-    </script>
     <!-- Declared Vars To Go Here -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -148,5 +130,25 @@
       </p>
       <p>&copy; 2022 EGNYTE POLAND</p>
     </footer>
+  <script>
+      const button_online = document.querySelector("#btn_online")
+      button_online.addEventListener('click', () => {
+        fetch('http://127.0.0.1:8080/status/', {
+          method: 'POST',
+          body: {"status": "ONLINE"},
+          mode: "cors",
+        }).then(() => location.replace('http://127.0.0.1:8080/start'))
+  });
+    </script>
+    <script>
+      const button_offline = document.querySelector("#btn_offline")
+      button_offline.addEventListener('click', () => {
+        fetch('http://127.0.0.1:8080/status/', {
+          method: 'POST',
+          body: {"status": "OFFLINE"},
+          mode: "cors",
+        }).then(() => location.replace('http://127.0.0.1:8080/start'))
+  });
+    </script>
   </body>
 </html>

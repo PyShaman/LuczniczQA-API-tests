@@ -4,6 +4,7 @@ import requests
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 
 from auth.jwt_bearer import JWTBearer
@@ -23,6 +24,19 @@ app = FastAPI(
         "profiles": "https://www.linkedin.com/in/michal-bek/, https://www.linkedin.com/in/jacek-stachowiak-28742690/",
         "emails": "mbek@egnyte.com, jacstachowiak@egnyte.com"
     })
+
+origins = [
+    "http://127.0.0.1",
+    "http://127.0.0.1:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 base_path = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(base_path / "templates"))
