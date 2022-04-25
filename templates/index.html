@@ -135,9 +135,12 @@
       button_online.addEventListener('click', () => {
         fetch('http://127.0.0.1:8080/status/', {
           method: 'POST',
-          body: {"status": "ONLINE"},
-          mode: "cors",
-        }).then(() => location.replace('http://127.0.0.1:8080/start'))
+           body: JSON.stringify({"status": "ONLINE"}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((response)=>response.json())
   });
     </script>
     <script>
@@ -145,9 +148,12 @@
       button_offline.addEventListener('click', () => {
         fetch('http://127.0.0.1:8080/status/', {
           method: 'POST',
-          body: {"status": "OFFLINE"},
-          mode: "cors",
-        }).then(() => location.replace('http://127.0.0.1:8080/start'))
+          body: JSON.stringify({"status": "OFFLINE"}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((response)=>response.json())
   });
     </script>
   </body>

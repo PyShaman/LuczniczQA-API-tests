@@ -1,10 +1,8 @@
 import datetime
-import requests
 
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, Request
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 
 from auth.jwt_bearer import JWTBearer
@@ -25,19 +23,6 @@ app = FastAPI(
         "emails": "mbek@egnyte.com, jacstachowiak@egnyte.com"
     })
 
-origins = [
-    "http://127.0.0.1",
-    "http://127.0.0.1:8080",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 base_path = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(base_path / "templates"))
 token_listener = JWTBearer()
@@ -57,8 +42,6 @@ async def get_start(request: Request):
     app_status = app_status_list[-1]["status"]
     return templates.TemplateResponse("index.html", {"request": request,
                                                      "app_status": app_status,
-                                                     # "set_online": set_online(),
-                                                     # "set_offline": set_offline(),
                                                      "students": student_list,
                                                      "universities": university_list,
                                                      "refresh_time": refresh_time})
