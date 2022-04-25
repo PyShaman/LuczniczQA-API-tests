@@ -14,7 +14,13 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <style>
-    #btn_up {
+    #ONLINE {
+    color: #04AA6D;
+    }
+    #OFFLINE {
+    color: #f44336;
+    }
+    #btn_online {
     background-color: #04AA6D;
     border: none;
     color: white;
@@ -25,7 +31,7 @@
     font-size: 16px;
     width: 250px;
     }
-    #btn_dwn {
+    #btn_offline {
     background-color: #f44336;
     border: none;
     color: white;
@@ -74,11 +80,11 @@
       </header>
       <div class="page-heading" style="text-align: center;">
         <!-- Page Heading -->
-        <h1>The status of Application is {{ app_status }}</h1>
+        <h1>The status of Application is </h1><h1 id="{{'ONLINE' if app_status == 'ONLINE' else 'OFFLINE'}}" >{{ app_status }}</h1>
         </br>
-        <form action="" method="post">
-          <input id="btn_up" type="submit" name="up" value="Set ONLINE" />
-          <input id="btn_dwn" type="submit" name="down" value="Set OFFLINE" />
+        <form >
+          <button id="btn_online" type="submit">Set ONLINE</button>
+          <button id="btn_offline" type="submit">Set OFFLINE</button>
         </form>
         <br>
         <table id="students">
@@ -124,5 +130,31 @@
       </p>
       <p>&copy; 2022 EGNYTE POLAND</p>
     </footer>
+  <script>
+      const button_online = document.querySelector("#btn_online")
+      button_online.addEventListener('click', () => {
+        fetch('http://127.0.0.1:8080/status/', {
+          method: 'POST',
+           body: JSON.stringify({"status": "ONLINE"}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((response)=>response.json())
+  });
+    </script>
+    <script>
+      const button_offline = document.querySelector("#btn_offline")
+      button_offline.addEventListener('click', () => {
+        fetch('http://127.0.0.1:8080/status/', {
+          method: 'POST',
+          body: JSON.stringify({"status": "OFFLINE"}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((response)=>response.json())
+  });
+    </script>
   </body>
 </html>
