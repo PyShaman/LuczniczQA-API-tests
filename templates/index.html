@@ -80,7 +80,8 @@
       </header>
       <div class="page-heading" style="text-align: center;">
         <!-- Page Heading -->
-        <h1>The status of Application is </h1><h1 id="{{'ONLINE' if app_status == 'ONLINE' else 'OFFLINE'}}" >{{ app_status }}</h1>
+        <h1>The status of Application is </h1>
+        <h1 id="{{'ONLINE' if app_status == 'ONLINE' else 'OFFLINE'}}" >{{ app_status }}</h1>
         </br>
         <form >
           <button id="btn_online" type="submit">Set ONLINE</button>
@@ -103,7 +104,8 @@
             {% endfor %}
           </tr>
           {% endfor %}
-        </table><br>
+        </table>
+        <br>
         <table id="universities">
           <tr>
             <th>ID</th>
@@ -118,7 +120,8 @@
             {% endfor %}
           </tr>
           {% endfor %}
-        </table><br>
+        </table>
+        <br>
         <!-- Breadcrumbs -->
         <ol class="breadcrumb">
         </ol>
@@ -128,9 +131,9 @@
       <p>
         Last Visited: {{ refresh_time }}
       </p>
-      <p>&copy; 2022 EGNYTE POLAND</p>
+      <p>&copy; 2022 mib</p>
     </footer>
-  <script>
+    <script>
       const button_online = document.querySelector("#btn_online")
       button_online.addEventListener('click', () => {
         fetch('http://127.0.0.1:8080/status/', {
@@ -141,7 +144,7 @@
             'Accept': 'application/json'
           }
         }).then((response)=>response.json())
-  });
+      });
     </script>
     <script>
       const button_offline = document.querySelector("#btn_offline")
@@ -154,7 +157,7 @@
             'Accept': 'application/json'
           }
         }).then((response)=>response.json())
-  });
+      });
     </script>
   </body>
 </html>
