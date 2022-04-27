@@ -2,8 +2,9 @@ import aiohttp
 import datetime
 
 from dataclasses import dataclass
+from uuid import uuid4
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Response
 
 
 router = APIRouter()
@@ -33,7 +34,8 @@ async def is_luczniczqa_online():
 
 
 @router.get("/healthcheck")
-async def get_health():
+async def get_health(response: Response):
+    response.headers["X-Lucznicz-QAt"] = str(uuid4())
     luczniczqa_status = await is_luczniczqa_online()
     current_date = datetime.datetime.now()
     healthcheck_statistics = HealthcheckStatistics(current_date=current_date.isoformat(),
