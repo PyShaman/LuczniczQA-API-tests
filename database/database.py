@@ -2,7 +2,7 @@ import motor.motor_asyncio
 from bson import ObjectId
 from decouple import config
 
-from .database_helper import admin_helper, status_helper, student_helper, university_helper
+from .database_helper import admin_helper, status_helper, student_helper, university_helper, quotes_helper
 
 MONGO_DETAILS = config('MONGO_DETAILS')
 
@@ -14,6 +14,7 @@ admin_collection = database.get_collection('admins')
 status_collection = database.get_collection('status')
 student_collection = database.get_collection('students_collection')
 university_collection = database.get_collection('university_collection')
+quotes_collection = database.get_collection('quotes_collection')
 
 
 async def add_admin(admin_data: dict) -> dict:
@@ -98,4 +99,23 @@ async def update_university_data(id: str, data: dict):
     university = await university_collection.find_one({"_id": ObjectId(id)})
     if university:
         university_collection.update_one({"_id": ObjectId(id)}, {"$set": data})
+        return True
+
+
+async def add_quote(quote_data: dict) -> dict:
+    quote = await quotes_collection.insert_one(quote_data)
+    new_quote = await quotes_collection.find_one({"_id": quote.inserted_id})
+    return quotes_helper(new_quote)
+
+
+async def retrieve_quote(id: str) -> dict:
+    quote = await quotes_collection.find_one({"_id": ObjectId(id)})
+    if quote:
+        return quotes_helper(quote)
+
+
+async def update_quote_data(id: str, data: dict):
+    quote = await quotes_collection.find_one({"_id": ObjectId(id)})
+    if quote:
+        quotes_collection.update_one({"_id": ObjectId(id)}, {"$set": data})
         return True

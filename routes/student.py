@@ -45,7 +45,7 @@ async def delete_student_data(id: str, response: Response):
         else error_response_model("An error occured", 404, "Student with id {0} doesn't exist".format(id))
 
 
-@router.put("{id}")
+@router.put("/{id}")
 async def update_student(id: str, response: Response, req: UpdateStudentModel = Body(...)):
     response.headers["X-Lucznicz-QAt"] = str(uuid4())
     updated_student = await update_student_data(id, req.dict())

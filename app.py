@@ -12,6 +12,7 @@ from routes.healthcheck import router as healthcheck_router
 from routes.status import router as status_router
 from routes.student import router as student_router
 from routes.university import router as university_router
+from routes.quotes import router as quotes_router
 
 
 app = FastAPI(
@@ -52,3 +53,4 @@ app.include_router(status_router, tags=["Status"], prefix="/status")
 app.include_router(student_router, tags=["Students"], prefix="/student", dependencies=[Depends(token_listener)])
 app.include_router(university_router, tags=["Universities"], prefix="/university", dependencies=[Depends(token_listener)])
 app.include_router(healthcheck_router, tags=["Healthcheck"])
+app.include_router(quotes_router, tags=["Quotes"], prefix="/quote")
