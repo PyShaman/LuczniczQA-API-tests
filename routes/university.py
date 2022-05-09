@@ -45,7 +45,7 @@ async def delete_university_data(id: str, response: Response):
         else error_response_model("An error occured", 404, "University with id {0} doesn't exist".format(id))
 
 
-@router.put("{id}")
+@router.put("/{id}")
 async def update_university(id: str, response: Response, req: UpdateUniversityModel = Body(...)):
     response.headers["X-Lucznicz-QAt"] = str(uuid4())
     updated_university = await update_university_data(id, req.dict())

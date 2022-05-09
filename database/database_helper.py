@@ -38,3 +38,11 @@ def university_helper(university) -> dict:
         "timezone": university['timezone'],
         "current_time": current_time
     }
+
+
+def quotes_helper(quote) -> dict:
+    return {
+            "id": str(quote['_id']),
+            "quote": quote['quote'],
+            "author": quote['author']
+    }
