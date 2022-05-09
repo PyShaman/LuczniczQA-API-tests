@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Body
+from uuid import uuid4
+from fastapi import APIRouter, Body, Response
 from fastapi.encoders import jsonable_encoder
 
 from database.database import *
@@ -8,7 +9,8 @@ router = APIRouter()
 
 
 @router.get("/{id}", response_description="Quote retrieved")
-async def get_quote_data(id):
+async def get_quote_data(id, response: Response):
+    response.headers["X-Lucznicz-QAt"] = str(uuid4())
     quote = await retrieve_quote(id)
     return response_model(quote, "Quote data retrieved successfully") \
         if quote \
@@ -16,14 +18,16 @@ async def get_quote_data(id):
 
 
 @router.post("/", response_description="Quote added into the database")
-async def add_quote_data(quote: QuotesModel = Body(...)):
+async def add_quote_data(response: Response, quote: QuotesModel = Body(...)):
+    response.headers["X-Lucznicz-QAt"] = str(uuid4())
     quote = jsonable_encoder(quote)
     new_quote = await add_quote(quote)
     return response_model(new_quote, "Quote added successfully.")
 
 
 @router.put("/{id}")
-async def update_quote(id: str, req: UpdateQuotesModel = Body(...)):
+async def update_quote(response: Response, id: str, req: UpdateQuotesModel = Body(...)):
+    response.headers["X-Lucznicz-QAt"] = str(uuid4())
     updated_quote = await update_quote_data(id, req.dict())
     return response_model("Quote with ID: {} update is successful".format(id),
                           "Quote updated successfully") \
