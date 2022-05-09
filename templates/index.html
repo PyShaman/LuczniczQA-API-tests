@@ -22,7 +22,8 @@
     }
     #btn_online {
     background-color: #04AA6D;
-    border: none;
+    border: 3px solid;
+    border-radius: 10px;
     color: white;
     padding: 15px 32px;
     text-align: center;
@@ -33,7 +34,8 @@
     }
     #btn_offline {
     background-color: #f44336;
-    border: none;
+    border: 3px solid;
+    border-radius: 10px;
     color: white;
     padding: 15px 32px;
     text-align: center;
@@ -41,6 +43,26 @@
     display: inline-block;
     font-size: 16px;
     width: 250px;
+    }
+    #btn_online:hover {
+    animation: pulsate_online 1s ease-in-out;
+    }
+    @keyframes pulsate_online {
+    0% {
+       box-shadow:
+       0 0 25px #33cc33,
+       0 0 50px #c2f0c2;
+       }
+    }
+    #btn_offline:hover {
+    animation: pulsate_offline 1s ease-in-out;
+    }
+    @keyframes pulsate_offline {
+    0% {
+       box-shadow:
+       0 0 25px #ff0000,
+       0 0 50px #ffb3b3;
+       }
     }
     #students, #universities {
     font-family: Arial, Helvetica, sans-serif;
@@ -84,8 +106,8 @@
         <h1 id="{{'ONLINE' if app_status == 'ONLINE' else 'OFFLINE'}}" >{{ app_status }}</h1>
         </br>
         <form >
-          <button id="btn_online" type="submit">Set ONLINE</button>
-          <button id="btn_offline" type="submit">Set OFFLINE</button>
+          <button id="btn_online" type="submit" class="button">Set ONLINE</button>
+          <button id="btn_offline" type="submit" class="button">Set OFFLINE</button>
         </form>
         <br>
         <table id="students">
