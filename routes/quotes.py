@@ -26,10 +26,19 @@ async def add_quote_data(response: Response, quote: QuotesModel = Body(...)):
 
 
 @router.put("/{id}")
-async def update_quote(response: Response, id: str, req: UpdateQuotesModel = Body(...)):
+async def update_quote_data(response: Response, id: str, req: UpdateQuotesModel = Body(...)):
     response.headers["X-Lucznicz-QAt"] = str(uuid4())
-    updated_quote = await update_quote_data(id, req.dict())
+    updated_quote = await update_quote(id, req.dict())
     return response_model("Quote with ID: {} update is successful".format(id),
                           "Quote updated successfully") \
         if updated_quote \
         else error_response_model("An error occurred", 404, "There was an error updating quote {}.".format(id))
+
+
+@router.delete("/{id}", response_description="Quote deleted from database")
+async def delete_quote_data(id: str, response: Response):
+    response.headers["X-Lucznicz-QAt"] = str(uuid4())
+    deleted_quote = await delete_quote(id)
+    return response_model("Quote with ID : {} removed".format(id), "Quote deleted successfully") \
+        if deleted_quote \
+        else error_response_model("An error occured", 404, "Quote wit id {} doesn't exist".format(id))
