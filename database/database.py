@@ -115,8 +115,15 @@ async def retrieve_quote(id: str) -> dict:
         return quotes_helper(quote)
 
 
-async def update_quote_data(id: str, data: dict):
+async def update_quote(id: str, data: dict):
     quote = await quotes_collection.find_one({"_id": ObjectId(id)})
     if quote:
         quotes_collection.update_one({"_id": ObjectId(id)}, {"$set": data})
+        return True
+
+
+async def delete_quote(id: str):
+    quote = await quotes_collection.find_one({"_id": ObjectId(id)})
+    if quote:
+        await quotes_collection.delete_one({"_id": ObjectId(id)})
         return True
