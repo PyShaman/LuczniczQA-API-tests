@@ -22,12 +22,12 @@ async def admin_login(response: Response, admin_credentials: HTTPBasicCredential
         password = hash_helper.verify(admin_credentials.password, admin_user["password"])
         if password:
             jwt_ = sign_jwt(admin_credentials.username)
-            return response_model(jwt_, "Access token retrieved successfully") \
-                if jwt_ \
-                else HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+            if not jwt_:
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+            else:
+                return response_model(jwt_, "Access token retrieved successfully")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password"
-            )
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
 
 
 @router.post("/")

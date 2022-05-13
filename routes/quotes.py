@@ -14,8 +14,8 @@ async def get_quote_data(id, response: Response):
     quote = await retrieve_quote(id)
     if not quote:
         raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Quote with {id} doesn't exist.")
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Quote with {id} doesn't exist.")
     else:
         return response_model(quote, "Quote data retrieved successfully")
 
@@ -32,9 +32,10 @@ async def add_quote_data(response: Response, quote: QuotesModel = Body(...)):
 async def update_quote(response: Response, id: str, req: UpdateQuotesModel = Body(...)):
     response.headers["X-Lucznicz-QAt"] = str(uuid4())
     updated_quote = await update_quote_data(id, req.dict())
-    return response_model("Quote with ID: {} update is successful".format(id),
-                          "Quote updated successfully") \
-        if updated_quote \
-        else HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Quote with {id} doesn't exist.")
+    if not updated_quote:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Quote with {id} doesn't exist.")
+    else:
+        return response_model("Quote with ID: {} update is successful".format(id),
+                              "Quote updated successfully")
