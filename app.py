@@ -52,6 +52,5 @@ app.include_router(admin_router, tags=["Administrator"], prefix="/admin")
 app.include_router(status_router, tags=["Status"], prefix="/status")
 app.include_router(student_router, tags=["Students"], prefix="/student", dependencies=[Depends(token_listener)])
 app.include_router(university_router, tags=["Universities"], prefix="/university", dependencies=[Depends(token_listener)])
-app.include_router(quotes_router, tags=["Quotes"], prefix="/quote")
 app.include_router(healthcheck_router, tags=["Healthcheck"])
-
+app.include_router(quotes_router, tags=["Quotes"], prefix="/quote")

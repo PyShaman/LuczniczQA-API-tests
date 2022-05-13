@@ -2,8 +2,9 @@ import aiohttp
 import datetime
 
 from dataclasses import dataclass
+from uuid import uuid4
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Response
 
 
 router = APIRouter()
@@ -17,7 +18,7 @@ class HealthcheckStatistics:
 
 
 async def get_healthcheck():
-    url = "http://127.0.0.1:8000"
+    url = "http://127.0.0.1:8080/"
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(url) as response:
@@ -29,11 +30,12 @@ async def get_healthcheck():
 
 async def is_luczniczqa_online():
     message, status_code = await get_healthcheck()
-    return True if message["detail"] == "Not Found" else False
+    return True if message["message"] == "Welcome to ŁuczniczQA API Testing app." else False
 
 
-@router.get("/healthcheck", tags=["healthcheck"])
-async def get_health():
+@router.get("/healthcheck")
+async def get_health(response: Response):
+    response.headers["X-Lucznicz-QAt"] = str(uuid4())
     luczniczqa_status = await is_luczniczqa_online()
     current_date = datetime.datetime.now()
     healthcheck_statistics = HealthcheckStatistics(current_date=current_date.isoformat(),
