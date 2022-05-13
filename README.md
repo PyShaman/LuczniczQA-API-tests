@@ -28,3 +28,4 @@ Run application:
 
 Root page is available at: http://127.0.0.1:8080/
 Swagger is available at: http://127.0.0.1:8080/docs
+

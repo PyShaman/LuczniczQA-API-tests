@@ -1,4 +1,4 @@
-from fastapi import Body, APIRouter, Response
+from fastapi import Body, APIRouter, Response, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import HTTPBasicCredentials
 from passlib.context import CryptContext
@@ -7,7 +7,7 @@ from uuid import uuid4
 from database.database import admin_collection
 from auth.jwt_handler import sign_jwt
 from database.database import add_admin
-from models.admin import AdminModel
+from models.admin import AdminModel, response_model, error_response_model
 
 router = APIRouter()
 
@@ -19,14 +19,15 @@ async def admin_login(response: Response, admin_credentials: HTTPBasicCredential
     response.headers["X-Lucznicz-QAt"] = str(uuid4())
     admin_user = await admin_collection.find_one({"email": admin_credentials.username}, {"_id": 0})
     if admin_user:
-        password = hash_helper.verify(
-            admin_credentials.password, admin_user["password"])
+        password = hash_helper.verify(admin_credentials.password, admin_user["password"])
         if password:
-            return sign_jwt(admin_credentials.username)
-
-        return "Incorrect email or password"
-
-    return "Incorrect email or password"
+            jwt_ = sign_jwt(admin_credentials.username)
+            if not jwt_:
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+            else:
+                return response_model(jwt_, "Access token retrieved successfully")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
 
 
 @router.post("/")
