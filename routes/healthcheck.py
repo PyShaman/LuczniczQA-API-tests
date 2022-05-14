@@ -35,7 +35,7 @@ async def is_luczniczqa_online():
 
 @router.get("/healthcheck")
 async def get_health(response: Response):
-    response.headers["X-Lucznicz-QAt"] = str(uuid4())
+    response.headers["X-Luczniczqa"] = str(uuid4())
     luczniczqa_status = await is_luczniczqa_online()
     current_date = datetime.datetime.now()
     healthcheck_statistics = HealthcheckStatistics(current_date=current_date.isoformat(),
