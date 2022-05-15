@@ -39,10 +39,12 @@ async def admin_login(response: Response, admin_credentials: HTTPBasicCredential
 
 @router.post("/")
 async def admin_signup(response: Response, admin: AdminModel = Body(...)):
-    response.headers["X-Lucznicz-QAt"] = str(uuid4())
+    response.headers["X-Luczniczqa"] = str(uuid4())
     admin_exists = await admin_collection.find_one({"email": admin.email}, {"_id": 0})
     if admin_exists:
-        return "Email already exists"
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail="Email already exists",
+                            headers={"X-Luczniczqa": str(uuid4())})
 
     admin.password = hash_helper.encrypt(admin.password)
     new_admin = await add_admin(jsonable_encoder(admin))
