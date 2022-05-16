@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 import motor.motor_asyncio
 
 from bson import ObjectId
@@ -33,14 +35,15 @@ async def add_status(status_data: dict) -> dict:
 
 async def retrieve_status() -> dict:
     statuses = []
-    async for status in status_collection.find():
-        statuses.append(status_helper(status))
-        if not statuses:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Empty statuses list.")
-        else:
-            return statuses[-1]
+    async for status_ in status_collection.find():
+        statuses.append(status_helper(status_))
+    if not statuses:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Empty statuses list.",
+            headers={"X-Luczniczqa": str(uuid4())})
+    else:
+        return statuses[-1]
 
 
 async def retrieve_students():
