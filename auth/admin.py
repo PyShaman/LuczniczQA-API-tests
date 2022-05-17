@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from fastapi import HTTPException, Depends, status
 from fastapi.security import HTTPBasicCredentials, HTTPBasic
 from passlib.context import CryptContext
@@ -15,7 +17,8 @@ async def validate_login(credentials: HTTPBasicCredentials = Depends(security)):
         if not password:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password"
+                detail="Incorrect email or password",
+                headers={"X-Luczniczqa": str(uuid4())}
             )
         return True
     return False

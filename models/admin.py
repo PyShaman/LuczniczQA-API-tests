@@ -14,3 +14,13 @@ class AdminModel(BaseModel):
                 "password": "super_secret_password"
             }
         }
+
+
+def response_model(data, message):
+    return {
+        "data": [
+            data
+        ],
+        "code": 200,
+        "message": message,
+    }

@@ -1,7 +1,10 @@
+from uuid import uuid4
+
 import motor.motor_asyncio
 
 from bson import ObjectId
 from decouple import config
+from fastapi import HTTPException, status
 
 from .database_helper import admin_helper, status_helper, student_helper, university_helper, quotes_helper
 
@@ -9,7 +12,7 @@ MONGO_DETAILS = config('MONGO_DETAILS')
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
-database = client.university
+database = client.luczniczqa
 
 admin_collection = database.get_collection('admins')
 status_collection = database.get_collection('status')
@@ -32,9 +35,15 @@ async def add_status(status_data: dict) -> dict:
 
 async def retrieve_status() -> dict:
     statuses = []
-    async for status in status_collection.find():
-        statuses.append(status_helper(status))
-    return statuses[-1]
+    async for status_ in status_collection.find():
+        statuses.append(status_helper(status_))
+    if not statuses:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Empty statuses list.",
+            headers={"X-Luczniczqa": str(uuid4())})
+    else:
+        return statuses[-1]
 
 
 async def retrieve_students():
@@ -101,6 +110,13 @@ async def update_university_data(id: str, data: dict):
     if university:
         university_collection.update_one({"_id": ObjectId(id)}, {"$set": data})
         return True
+
+
+async def retrieve_quotes():
+    quotes = []
+    async for quote in quotes_collection.find():
+        quotes.append(quotes_helper(quote))
+    return quotes
 
 
 async def add_quote(quote_data: dict) -> dict:
