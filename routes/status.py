@@ -1,3 +1,6 @@
+import random
+import time
+
 from uuid import uuid4
 
 from fastapi import APIRouter, Body, Response, HTTPException, status
@@ -21,10 +24,14 @@ async def add_status_data(response: Response, status_: ApplicationStatus = Body(
 async def get_status(response: Response):
     response.headers["X-Luczniczqa"] = str(uuid4())
     status_ = await retrieve_status()
+    trick = random.randint(0, 1)
     if not status_:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Empty statuses list.",
             headers={"X-Luczniczqa": str(uuid4())})
+    elif trick:
+        return response_model(status_, "Status data retrieved successfully")
     else:
+        time.sleep(random.random())
         return response_model(status_, "Status data retrieved successfully")
