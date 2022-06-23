@@ -1,8 +1,11 @@
 import datetime
+import os
 
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, Request
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from auth.jwt_bearer import JWTBearer
@@ -25,8 +28,16 @@ app = FastAPI(
     })
 
 base_path = Path(__file__).resolve().parent
+app.mount("/templates/static", StaticFiles(directory="templates/static"), name="static")
 templates = Jinja2Templates(directory=str(base_path / "templates"))
 token_listener = JWTBearer()
+
+
+@app.get('/favicon.ico')
+async def favicon():
+    file_name = "api.png"
+    file_path = os.path.join(app.root_path, "static")
+    return FileResponse(path=file_path, headers={"Content-Disposition": "attachment; filename=" + file_name})
 
 
 @app.get("/", tags=["Root"])
